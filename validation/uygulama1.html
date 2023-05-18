@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Kayıt Formu</title>
+    <script src="C:\Users\PC\Desktop\jquery-3.7.0.min"></script>
+    <script>
+        $(document).ready(function() {
+            $('#registerForm').submit(function(e) {
+                e.preventDefault(); // Formun normal submit işlemini engeller
+
+                // Gerekli alanları al
+                var ad = $('#ad').val();
+                var soyad = $('#soyad').val();
+                var eposta = $('#eposta').val();
+                var sifre = $('#sifre').val();
+                var ceptelefonu = $('#ceptelefonu').val();
+                var cinsiyet = $('input[name="cinsiyet"]:checked').val();
+                var dogumTarihi = $('#dogumTarihi').val();
+
+                // Boşluk kontrolü yap
+                if (ad.trim() === '' || soyad.trim() === '' || eposta.trim() === '' || sifre.trim() === '' || ceptelefonu.trim() === '' || cinsiyet === undefined || dogumTarihi.trim() === '') {
+                    alert('Lütfen tüm alanları doldurun.');
+                    return;
+                }
+
+                // Servlet'e verileri gönder
+                $.ajax({
+                    url: 'servlet-adresi', // Servlete doğru yönlendirilecek adresi buraya yazın
+                    type: 'POST',
+                    data: {
+                        ad: ad,
+                        soyad: soyad,
+                        eposta: eposta,
+                        sifre: sifre,
+                        ceptelefonu: ceptelefonu,
+                        cinsiyet: cinsiyet,
+                        dogumTarihi: dogumTarihi
+                    },
+                    success: function(response) {
+                        alert('Kayıt başarıyla tamamlandı.');
+                        // Başka bir sayfaya yönlendirme yapabilirsiniz: window.location.href = 'yönlendirme-adresi';
+                    },
+                    error: function() {
+                        alert('Kayıt işlemi sırasında bir hata oluştu.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Kayıt Formu</h1>
+    <form id="registerForm">
+        <label for="ad">Ad:</label>
+        <input type="text" id="ad" name="ad"><br><br>
+
+        <label for="soyad">Soyad:</label>
+        <input type="text" id="soyad" name="soyad"><br><br>
+
+        <label for="eposta">Eposta:</label>
+        <input type="email" id="eposta" name="eposta"><br><br>
+
+        <label for="sifre">Şifre:</label>
+        <input type="password" id="sifre" name="sifre"><br><br>
+
+        <label for="ceptelefonu">Cep Telefonu:</label>
+        <input type="text" id="ceptelefonu" name="ceptelefonu"><br><br>
+
+        <label for="cinsiyet">Cinsiyet:</label>
+        <input type="radio" id="erkek" name="cinsiyet" value="erkek">
+        <label for="erkek">Erkek</label>
+        <input type="radio" id="kadin" name="cinsiyet" value="kadin">
+        <label for="kadin">Kadın</label><br><br>
+
+        <label for="dogumTarihi">Doğum Tarihi:</label>
+        <input type="date" id="dogumTarihi" name="dogumTarihi"><br><br>
+
+        <input type="submit" value="Kayıt Ol">
+    </form>
+</body>
+</html>
